@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Une question pour toi 💖</title>
+<style>
+:root{--bg1:#2a0a1f;--bg2:#5c1240;--fg:#fff;--accent:#ff4d8d;--card:rgba(255,255,255,.08);box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{font-family:Georgia,'Times New Roman',serif;color:var(--fg);background:linear-gradient(160deg,var(--bg1),var(--bg2));overflow:hidden;display:flex;align-items:center;justify-content:center;text-align:center}
+.heart{position:fixed;bottom:-40px;pointer-events:none;opacity:.5;animation:up linear forwards}
+@keyframes up{to{transform:translateY(-115vh) rotate(30deg);opacity:0}}
+.card{position:relative;z-index:2;padding:32px 24px;max-width:520px;width:100%}
+.big{font-size:64px;animation:beat 1.2s infinite}
+@keyframes beat{50%{transform:scale(1.15)}}
+h1{font-size:clamp(26px,6vw,40px);margin:12px 0 8px;line-height:1.25}
+p.sub{opacity:.8;margin:0 0 28px;font-style:italic}
+.btns{display:flex;gap:18px;justify-content:center;align-items:center;min-height:70px}
+button{font-family:inherit;font-size:20px;border:0;border-radius:999px;padding:14px 34px;cursor:pointer;color:#fff;transition:transform .15s}
+#yes{background:linear-gradient(135deg,#ff4d8d,#ff8a5c);box-shadow:0 8px 24px rgba(255,77,141,.5);transform-origin:center}
+#yes:hover{filter:brightness(1.1)}
+#no{background:#555;position:relative;z-index:5;touch-action:none}
+#no.fly{position:fixed;transition:left .28s cubic-bezier(.3,1.6,.5,1),top .28s cubic-bezier(.3,1.6,.5,1),transform .28s}
+#msg{margin-top:22px;min-height:24px;opacity:.85;font-size:15px}
+#love{position:fixed;inset:0;z-index:10;display:none;flex-direction:column;align-items:center;justify-content:center;padding:28px;background:radial-gradient(circle at 50% 30%,#7a1a52,#2a0a1f);overflow:auto}
+#love.show{display:flex;animation:fade 1s}
+@keyframes fade{from{opacity:0}}
+#love h2{font-size:clamp(30px,8vw,52px);margin:0 0 20px;color:#ffd1e3}
+.line{max-width:520px;font-size:clamp(17px,4.4vw,22px);line-height:1.6;margin:8px 0;opacity:0;transform:translateY(14px);transition:all 1s}
+.line.in{opacity:1;transform:none}
+.conf{position:fixed;top:-30px;z-index:11;pointer-events:none;animation:fall linear forwards}
+@keyframes fall{to{transform:translateY(110vh) rotate(360deg)}}
+</style>
+</head>
+<body>
+<div class="card" id="card">
+  <div class="big">💌</div>
+  <h1 id="q">Veux-tu sortir avec moi ?</h1>
+  <p class="sub" id="sub">J'ai une question très importante pour toi…</p>
+  <div class="btns">
+    <button id="yes">Oui 💖</button>
+    <button id="no">Non</button>
+  </div>
+  <div id="msg"></div>
+</div>
+
+<div id="love">
+  <div class="big">💞</div>
+  <h2 id="lt">Merci d'avoir dit Oui !</h2>
+  <div id="lines"></div>
+</div>
+
+<script>
+/* ===== PERSONNALISE ICI (ou via le lien : ?nom=Marie&type=epouser&de=Jean) ===== */
+const P = new URLSearchParams(location.search);
+const NOM = P.get('nom') || '';
+const DE  = P.get('de') || '';
+const TYPE = P.get('type') === 'epouser' ? 'epouser' : 'sortir';
+
+const TEXTS = {
+  sortir:{
+    q:'Veux-tu sortir avec moi ?',
+    lines:[
+      'Depuis que tu es dans ma vie, tout est plus doux, plus lumineux.',
+      'Ton sourire est ma chose préférée au monde.',
+      'Je promets de te respecter, de te faire rire et de prendre soin de ton cœur.',
+      'Tu viens de faire de moi la personne la plus heureuse. 💖'
+    ]},
+  epouser:{
+    q:'Veux-tu m\'épouser ?',
+    lines:[
+      'Tu es mon plus beau hasard et mon plus beau choix.',
+      'Je veux me réveiller à tes côtés chaque matin, pour toute la vie.',
+      'Dans les jours de soleil comme dans les jours de pluie, je serai là.',
+      'Je t\'aime aujourd\'hui, demain et pour toujours. 💍'
+    ]}
+};
+const T = TEXTS[TYPE];
+document.getElementById('q').textContent = (NOM ? NOM + ', ' : '') + T.q.charAt(0).toLowerCase() + T.q.slice(1);
+if(!NOM) document.getElementById('q').textContent = T.q;
+if(NOM) document.getElementById('q').textContent = NOM + ', ' + T.q.charAt(0).toLowerCase() + T.q.slice(1);
+if(DE) document.getElementById('sub').textContent = 'De la part de ' + DE + '… j\'ai une question très importante.';
+
+/* Coeurs flottants */
+setInterval(()=>{
+  const h=document.createElement('div');h.className='heart';
+  h.textContent=['💖','💗','💕','❤️'][Math.random()*4|0];
+  h.style.left=Math.random()*100+'vw';h.style.fontSize=(16+Math.random()*26)+'px';
+  h.style.animationDuration=(6+Math.random()*6)+'s';
+  document.body.appendChild(h);setTimeout(()=>h.remove(),12500);
+},450);
+
+/* Bouton NON qui fuit */
+const no=document.getElementById('no'), yes=document.getElementById('yes'), msg=document.getElementById('msg');
+const MSGS=['Essaie encore 😏','Trop lent !','Impossible de m\'attraper 🏃','Tu es sûr(e) ? 🥺','Le bouton Non a peur 😂','Allez, clique sur Oui 💖','Non n\'existe pas ici 😌','Raté !'];
+let tries=0, scale=1;
+
+function flee(){
+  const w=no.offsetWidth, h=no.offsetHeight, pad=12;
+  const maxX=innerWidth-w-pad, maxY=innerHeight-h-pad;
+  const cur=no.getBoundingClientRect();
+  let x,y,n=0;
+  do{
+    x=pad+Math.random()*Math.max(maxX-pad,1);
+    y=pad+Math.random()*Math.max(maxY-pad,1);
+    n++;
+  }while(Math.hypot(x-cur.left,y-cur.top)<160 && n<20);
+  no.classList.add('fly');
+  no.style.left=x+'px';no.style.top=y+'px';
+  no.style.transform='rotate('+((Math.random()*40-20)|0)+'deg)';
+  tries++;
+  msg.textContent=MSGS[tries%MSGS.length];
+  scale=Math.min(scale+0.12,2.2);
+  yes.style.transform='scale('+scale+')';
+}
+['pointerenter','pointerdown','touchstart','mousedown','click','focus'].forEach(ev=>
+  no.addEventListener(ev,e=>{e.preventDefault();flee();},{passive:false}));
+
+/* Il fuit aussi quand le doigt / la souris s'approche */
+addEventListener('pointermove',e=>{
+  const r=no.getBoundingClientRect();
+  const cx=r.left+r.width/2, cy=r.top+r.height/2;
+  if(Math.hypot(e.clientX-cx,e.clientY-cy)<90) flee();
+});
+
+/* OUI */
+yes.addEventListener('click',()=>{
+  const love=document.getElementById('love');
+  love.classList.add('show');
+  no.style.display='none';
+  const box=document.getElementById('lines');
+  T.lines.forEach((t,i)=>{
+    const d=document.createElement('div');d.className='line';d.textContent=t;box.appendChild(d);
+    setTimeout(()=>d.classList.add('in'),900+i*1600);
+  });
+  if(DE){const s=document.createElement('div');s.className='line';s.style.fontStyle='italic';s.textContent='— '+DE;box.appendChild(s);setTimeout(()=>s.classList.add('in'),900+T.lines.length*1600);}
+  let c=0;const iv=setInterval(()=>{
+    for(let k=0;k<4;k++){
+      const f=document.createElement('div');f.className='conf';
+      f.textContent=['💖','🎉','✨','💕','🌹'][Math.random()*5|0];
+      f.style.left=Math.random()*100+'vw';f.style.fontSize=(18+Math.random()*22)+'px';
+      f.style.animationDuration=(2.5+Math.random()*3)+'s';
+      document.body.appendChild(f);setTimeout(()=>f.remove(),6000);
+    }
+    if(++c>50)clearInterval(iv);
+  },120);
+});
+</script>
+</body>
+</html>
