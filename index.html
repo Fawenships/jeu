@@ -3,153 +3,194 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Une question pour toi 💖</title>
+<title>Créateur de demandes 💌</title>
 <style>
-:root{--bg1:#2a0a1f;--bg2:#5c1240;--fg:#fff;--accent:#ff4d8d;--card:rgba(255,255,255,.08);box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+:root{--bg1:#1b0f2e;--bg2:#4a1747;--acc:#ff4d8d;--fg:#fff;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 html{scroll-padding-top:env(safe-area-inset-top,0px)}
 *{box-sizing:border-box}
 html,body{height:100%;margin:0}
-body{font-family:Georgia,'Times New Roman',serif;color:var(--fg);background:linear-gradient(160deg,var(--bg1),var(--bg2));overflow:hidden;display:flex;align-items:center;justify-content:center;text-align:center}
-.heart{position:fixed;bottom:-40px;pointer-events:none;opacity:.5;animation:up linear forwards}
-@keyframes up{to{transform:translateY(-115vh) rotate(30deg);opacity:0}}
-.card{position:relative;z-index:2;padding:32px 24px;max-width:520px;width:100%}
+body{font-family:Georgia,serif;color:var(--fg);background:linear-gradient(160deg,var(--bg1),var(--bg2));overflow-x:hidden}
+#hub{max-width:760px;margin:0 auto;padding:28px 18px 70px;text-align:center}
+h1{font-size:clamp(26px,6vw,38px);margin:6px 0}
+.sub{opacity:.75;margin:0 0 22px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-bottom:20px}
+.tpl{background:rgba(255,255,255,.08);border:2px solid transparent;border-radius:16px;padding:16px 10px;color:#fff;font-family:inherit;cursor:pointer;transition:.2s}
+.tpl:hover{transform:translateY(-3px)}
+.tpl.on{border-color:var(--acc);background:rgba(255,255,255,.16)}
+.tpl b{display:block;font-size:34px;margin-bottom:6px}
+.tpl span{font-size:14px;opacity:.9}
+.form{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-bottom:16px}
+input{font-family:inherit;font-size:16px;padding:12px 16px;border-radius:12px;border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.1);color:#fff;min-width:0;flex:1 1 200px}
+input::placeholder{color:rgba(255,255,255,.55)}
+.row{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+button.act{font-family:inherit;font-size:17px;border:0;border-radius:999px;padding:13px 26px;cursor:pointer;color:#fff;background:linear-gradient(135deg,#ff4d8d,#ff8a5c)}
+button.alt{background:rgba(255,255,255,.15)}
+#shareBox{display:none;margin-top:18px;padding:14px;border-radius:14px;background:rgba(255,255,255,.08)}
+#shareBox input{width:100%;margin-bottom:10px}
+#toast{min-height:20px;margin-top:8px;font-size:14px;opacity:.85}
+/* viewer */
+#view{position:fixed;inset:0;z-index:5;display:none;align-items:center;justify-content:center;text-align:center;overflow:hidden;background:linear-gradient(160deg,var(--bg1),var(--bg2))}
+.card{position:relative;z-index:2;padding:30px 22px;max-width:520px;width:100%}
 .big{font-size:64px;animation:beat 1.2s infinite}
 @keyframes beat{50%{transform:scale(1.15)}}
-h1{font-size:clamp(26px,6vw,40px);margin:12px 0 8px;line-height:1.25}
-p.sub{opacity:.8;margin:0 0 28px;font-style:italic}
-.btns{display:flex;gap:18px;justify-content:center;align-items:center;min-height:70px}
-button{font-family:inherit;font-size:20px;border:0;border-radius:999px;padding:14px 34px;cursor:pointer;color:#fff;transition:transform .15s}
-#yes{background:linear-gradient(135deg,#ff4d8d,#ff8a5c);box-shadow:0 8px 24px rgba(255,77,141,.5);transform-origin:center}
-#yes:hover{filter:brightness(1.1)}
-#no{background:#555;position:relative;z-index:5;touch-action:none}
+#q{font-size:clamp(26px,6vw,40px);margin:12px 0 8px;line-height:1.25}
+.btns{display:flex;gap:18px;justify-content:center;align-items:center;min-height:70px;margin-top:24px}
+.btns button{font-family:inherit;font-size:20px;border:0;border-radius:999px;padding:14px 34px;cursor:pointer;color:#fff}
+#yes{background:linear-gradient(135deg,var(--acc),#ff8a5c);box-shadow:0 8px 24px rgba(0,0,0,.35)}
+#no{background:#555;z-index:5;touch-action:none}
 #no.fly{position:fixed;transition:left .28s cubic-bezier(.3,1.6,.5,1),top .28s cubic-bezier(.3,1.6,.5,1),transform .28s}
-#msg{margin-top:22px;min-height:24px;opacity:.85;font-size:15px}
-#love{position:fixed;inset:0;z-index:10;display:none;flex-direction:column;align-items:center;justify-content:center;padding:28px;background:radial-gradient(circle at 50% 30%,#7a1a52,#2a0a1f);overflow:auto}
+#msg{margin-top:20px;min-height:22px;opacity:.85;font-size:15px}
+#back{position:fixed;top:calc(12px + env(safe-area-inset-top,0px));left:12px;z-index:20;display:none;background:rgba(0,0,0,.4);color:#fff;border:0;border-radius:999px;padding:10px 16px;font-family:inherit;cursor:pointer}
+#love{position:fixed;inset:0;z-index:10;display:none;flex-direction:column;align-items:center;justify-content:center;padding:28px;background:radial-gradient(circle at 50% 30%,var(--bg2),var(--bg1));overflow:auto}
 #love.show{display:flex;animation:fade 1s}
 @keyframes fade{from{opacity:0}}
-#love h2{font-size:clamp(30px,8vw,52px);margin:0 0 20px;color:#ffd1e3}
+#love h2{font-size:clamp(30px,8vw,50px);margin:0 0 18px}
 .line{max-width:520px;font-size:clamp(17px,4.4vw,22px);line-height:1.6;margin:8px 0;opacity:0;transform:translateY(14px);transition:all 1s}
 .line.in{opacity:1;transform:none}
-.dev{position:fixed;left:0;right:0;bottom:calc(10px + env(safe-area-inset-bottom,0px));z-index:12;text-align:center;font-size:13px;opacity:.6;letter-spacing:.5px;pointer-events:none}
-.conf{position:fixed;top:-30px;z-index:11;pointer-events:none;animation:fall linear forwards}
+.fl{position:fixed;pointer-events:none;z-index:1}
+.heart{bottom:-40px;opacity:.5;animation:up linear forwards}
+@keyframes up{to{transform:translateY(-115vh) rotate(30deg);opacity:0}}
+.conf{top:-30px;z-index:11;animation:fall linear forwards}
 @keyframes fall{to{transform:translateY(110vh) rotate(360deg)}}
+.dev{position:fixed;left:0;right:0;bottom:calc(10px + env(safe-area-inset-bottom,0px));z-index:30;text-align:center;font-size:13px;opacity:.6;pointer-events:none}
 </style>
 </head>
 <body>
-<div class="card" id="card">
-  <div class="big">💌</div>
-  <h1 id="q">Veux-tu sortir avec moi ?</h1>
-  <p class="sub" id="sub">J'ai une question très importante pour toi…</p>
-  <div class="btns">
-    <button id="yes">Oui 💖</button>
-    <button id="no">Non</button>
+<div id="hub">
+  <div style="font-size:54px">💌</div>
+  <h1>Crée ta demande</h1>
+  <p class="sub">Choisis un ou plusieurs modèles (touche pour ajouter ou retirer), écris le prénom, puis partage. La personne ne verra que ta sélection.</p>
+  <div class="grid" id="grid"></div>
+  <div class="form">
+    <input id="nom" placeholder="Prénom de la personne (facultatif)">
+    <input id="de" placeholder="Ton prénom (facultatif)">
   </div>
-  <div id="msg"></div>
+  <div class="row">
+    <button class="act alt" id="prev">👀 Aperçu</button>
+    <button class="act" id="share">📤 Partager</button>
+  </div>
+  <div id="toast"></div>
+  <div id="shareBox">
+    <input id="link" readonly>
+    <div class="row">
+      <button class="act alt" id="copy">📋 Copier</button>
+      <button class="act" id="wa">WhatsApp</button>
+    </div>
+  </div>
 </div>
 
-<div id="love">
-  <div class="big">💞</div>
-  <h2 id="lt">Merci d'avoir dit Oui !</h2>
-  <div id="lines"></div>
-</div>
+<div id="pick" style="display:none;max-width:760px;margin:0 auto;padding:40px 18px 70px;text-align:center"><button class="act alt" id="pbk" style="display:none;margin-bottom:14px">← Retour</button><h1 id="pt"></h1><p class="sub">Choisis-en une pour découvrir la surprise.</p><div class="grid" id="pg"></div></div>
 
-<div class="dev">Développé par Fawenbert Regis </div>
+<div id="view">
+  <button id="back">← Retour</button>
+  <div class="card">
+    <div class="big" id="emo"></div>
+    <h1 id="q"></h1>
+    <div class="btns"><button id="yes"></button><button id="no"></button></div>
+    <div id="msg"></div>
+  </div>
+  <div id="love"><div class="big" id="emo2"></div><h2 id="lt"></h2><div id="lines"></div></div>
+</div>
+<div class="dev">Développé par Fawenbert Regis 💻</div>
 
 <script>
-/* ===== PERSONNALISE ICI (ou via le lien : ?nom=Marie&type=epouser&de=Jean) ===== */
-const P = new URLSearchParams(location.search);
-const NOM = P.get('nom') || '';
-const DE  = P.get('de') || '';
-const TYPE = P.get('type') === 'epouser' ? 'epouser' : 'sortir';
-
-const TEXTS = {
-  sortir:{
-    q:'Veux-tu sortir avec moi ?',
-    lines:[
-      'Depuis que tu es dans ma vie, tout est plus doux, plus lumineux.',
-      'Ton sourire est ma chose préférée au monde.',
-      'Je promets de te respecter, de te faire rire et de prendre soin de ton cœur.',
-      'Tu viens de faire de moi la personne la plus heureuse. 💖'
-    ]},
-  epouser:{
-    q:'Veux-tu m\'épouser ?',
-    lines:[
-      'Tu es mon plus beau hasard et mon plus beau choix.',
-      'Je veux me réveiller à tes côtés chaque matin, pour toute la vie.',
-      'Dans les jours de soleil comme dans les jours de pluie, je serai là.',
-      'Je t\'aime aujourd\'hui, demain et pour toujours. 💍'
-    ]}
+const TPL={
+ sortir:{e:'💌',n:'Sortir ensemble',q:'Veux-tu sortir avec moi ?',yes:'Oui 💖',no:'Non',c:['#2a0a1f','#5c1240','#ff4d8d'],em:['💖','💗','💕'],t:"Merci d'avoir dit Oui !",l:['Depuis que tu es dans ma vie, tout est plus doux, plus lumineux.','Ton sourire est ma chose préférée au monde.','Je promets de te respecter, de te faire rire et de prendre soin de ton cœur.','Tu viens de faire de moi la personne la plus heureuse. 💖']},
+ epouser:{e:'💍',n:'Mariage',q:"Veux-tu m'épouser ?",yes:'Oui, mille fois 💍',no:'Non',c:['#1a1530','#4a2b6b','#e6b85c'],em:['💍','✨','💖'],t:'Elle / Il a dit OUI !',l:['Tu es mon plus beau hasard et mon plus beau choix.','Je veux me réveiller à tes côtés chaque matin, pour toute la vie.','Dans les jours de soleil comme dans les jours de pluie, je serai là.',"Je t'aime aujourd'hui, demain et pour toujours. 💍"]},
+ pardon:{e:'🥺',n:'Pardon',q:'Me pardonnes-tu ?',yes:'Je te pardonne 💙',no:'Non',c:['#0f2230','#1f4d5c','#5cc8e6'],em:['💙','🕊️','✨'],t:'Merci de ton grand cœur',l:["Je suis vraiment désolé(e) d'avoir blessé ton cœur.",'Tu comptes énormément pour moi, plus que tous les mots.','Je te promets de faire mieux, chaque jour.','Merci de me donner une seconde chance. 🕊️']},
+ valentin:{e:'🌹',n:'Ma Valentine',q:'Veux-tu être ma Valentine ?',yes:'Oui 🌹',no:'Non',c:['#3a0a12','#8a1c2b','#ff5a6e'],em:['🌹','❤️','💋'],t:'Joyeuse Saint-Valentin !',l:['Tu es la plus belle rose de mon jardin.','Chaque jour avec toi ressemble à une fête.','Cette année, je veux que ce soit toi, et personne d’autre.','Je t’aime, ma Valentine. ❤️']},
+ diner:{e:'🍽️',n:'Rendez-vous',q:'Veux-tu dîner avec moi ce soir ?',yes:'Avec plaisir 🍷',no:'Non',c:['#2a1a08','#6b4212','#ffb347'],em:['🍷','✨','💖'],t:'Rendez-vous pris !',l:['Une belle soirée, rien que pour nous deux.','Bonne musique, bonne table et beaucoup de rires.','Je ferai en sorte que ce soit inoubliable.','Prépare-toi, je viens te chercher. ✨']},
+ amis:{e:'🤝',n:'Meilleur(e) ami(e)',q:'Veux-tu être mon meilleur ami / ma meilleure amie ?',yes:'Avec joie 🤝',no:'Non',c:['#0b2a2a','#1b6b5a','#5ce6b8'],em:['🤝','✨','💚'],t:'Amitié officielle !',l:['Les vrais amis sont rares, et tu es le plus précieux.','Avec toi, même les jours difficiles deviennent légers.','Je serai toujours là pour toi, dans les bons comme les mauvais moments.','Merci d’être toi. 💚']},
+ anniv:{e:'🎂',n:'Anniversaire',q:'Viendras-tu à mon anniversaire ?',yes:"J'arrive 🎉",no:'Non',c:['#2a0f3a','#6b1f8a','#ffd166'],em:['🎂','🎈','🎉'],t:'Youpi, tu viens !',l:['Ma fête ne serait pas complète sans toi.','Il y aura de la musique, du gâteau et beaucoup de rires.','Ta présence sera mon plus beau cadeau.','À très vite ! 🎈']},
+ danse:{e:'💃',n:'Danse',q:"M'accordes-tu cette danse ?",yes:'Avec plaisir 💃',no:'Non',c:['#1a0f2e','#3b1f6b','#c77dff'],em:['💃','🎶','✨'],t:'La piste est à nous !',l:['Une musique douce, et rien que toi et moi.','Je te tiendrai la main, et le monde disparaîtra.','Cette danse restera dans ma mémoire pour toujours.','Allons-y. 🎶']},
+ voyage:{e:'✈️',n:'Voyage',q:'Veux-tu partir en voyage avec moi ?',yes:'On part ! ✈️',no:'Non',c:['#0a1f3a','#124a7a','#5cc8ff'],em:['✈️','🌴','🌍'],t:'Bagages prêts !',l:['Le plus beau des voyages, c’est celui qu’on fait à deux.','Découvrir le monde à tes côtés, voilà mon rêve.','Chaque destination sera magique avec toi.','Prépare ta valise ! 🌍']},
+ cafe:{e:'☕',n:'Café',q:'Prendrais-tu un café avec moi ?',yes:'Volontiers ☕',no:'Non',c:['#241509','#5a3a1c','#d4a373'],em:['☕','🍰','💖'],t:'Un café, deux cœurs !',l:['J’aimerais simplement passer un moment avec toi.','Un café, une discussion, et le temps qui s’arrête.','Je te promets une belle rencontre.','À très bientôt ! ☕']},
+ retour:{e:'💔',n:'Se remettre ensemble',q:"Veux-tu qu'on se remette ensemble ?",yes:'Oui, recommençons 💞',no:'Non',c:['#1e1030','#4a2a5c','#ff7eb6'],em:['💞','🌷','✨'],t:'Une nouvelle histoire commence',l:['Loin de toi, j’ai compris ce qui compte vraiment.','J’ai appris de mes erreurs et je veux mieux faire.','Je te choisis, aujourd’hui et chaque jour.','Recommençons, cette fois pour de bon. 💞']}
 };
-const T = TEXTS[TYPE];
-document.getElementById('q').textContent = (NOM ? NOM + ', ' : '') + T.q.charAt(0).toLowerCase() + T.q.slice(1);
-if(!NOM) document.getElementById('q').textContent = T.q;
-if(NOM) document.getElementById('q').textContent = NOM + ', ' + T.q.charAt(0).toLowerCase() + T.q.slice(1);
-if(DE) document.getElementById('sub').textContent = 'De la part de ' + DE + '… j\'ai une question très importante.';
+const $=id=>document.getElementById(id);
+const sel=new Set(['sortir']);let timers=[],cur=null,ctx=null;
 
-/* Coeurs flottants */
-setInterval(()=>{
-  const h=document.createElement('div');h.className='heart';
-  h.textContent=['💖','💗','💕','❤️'][Math.random()*4|0];
-  h.style.left=Math.random()*100+'vw';h.style.fontSize=(16+Math.random()*26)+'px';
-  h.style.animationDuration=(6+Math.random()*6)+'s';
-  document.body.appendChild(h);setTimeout(()=>h.remove(),12500);
-},450);
+/* Hub */
+$('grid').innerHTML=Object.entries(TPL).map(([k,v])=>`<button class="tpl" data-k="${k}"><b>${v.e}</b><span>${v.n}</span></button>`).join('');
+function mark(){document.querySelectorAll('#grid .tpl').forEach(b=>b.classList.toggle('on',sel.has(b.dataset.k)));}
+$('grid').onclick=e=>{const b=e.target.closest('.tpl');if(b){const k=b.dataset.k;if(sel.has(k)){if(sel.size>1)sel.delete(k);}else sel.add(k);mark();}};
+mark();
 
-/* Bouton NON qui fuit */
-const no=document.getElementById('no'), yes=document.getElementById('yes'), msg=document.getElementById('msg');
-const MSGS=['Essaie encore 😏','Trop lent !','Impossible de m\'attraper 🏃','Tu es sûr(e) ? 🥺','Le bouton Non a peur 😂','Allez, clique sur Oui 💖','Non n\'existe pas ici 😌','Raté !'];
-let tries=0, scale=1;
-
-function flee(){
-  const w=no.offsetWidth, h=no.offsetHeight, pad=12;
-  const maxX=innerWidth-w-pad, maxY=innerHeight-h-pad;
-  const cur=no.getBoundingClientRect();
-  let x,y,n=0;
-  do{
-    x=pad+Math.random()*Math.max(maxX-pad,1);
-    y=pad+Math.random()*Math.max(maxY-pad,1);
-    n++;
-  }while(Math.hypot(x-cur.left,y-cur.top)<160 && n<20);
-  no.classList.add('fly');
-  no.style.left=x+'px';no.style.top=y+'px';
-  no.style.transform='rotate('+((Math.random()*40-20)|0)+'deg)';
-  tries++;
-  msg.textContent=MSGS[tries%MSGS.length];
-  scale=Math.min(scale+0.12,2.2);
-  yes.style.transform='scale('+scale+')';
+function makeLink(){
+  const p=new URLSearchParams({t:[...sel].join(',')});
+  if($('nom').value.trim())p.set('nom',$('nom').value.trim());
+  if($('de').value.trim())p.set('de',$('de').value.trim());
+  return location.origin+location.pathname+'?'+p.toString();
 }
-['pointerenter','pointerdown','touchstart','mousedown','click','focus'].forEach(ev=>
-  no.addEventListener(ev,e=>{e.preventDefault();flee();},{passive:false}));
+$('prev').onclick=()=>openSet([...sel],$('nom').value.trim(),$('de').value.trim(),true);
+$('share').onclick=async()=>{
+  const url=makeLink();
+  $('link').value=url;$('shareBox').style.display='block';
+  $('wa').onclick=()=>window.open('https://wa.me/?text='+encodeURIComponent('J\'ai une question pour toi 💌 '+url),'_blank');
+  if(navigator.share){
+    try{await navigator.share({title:'Une question pour toi 💌',text:'J\'ai une question pour toi 💌',url});return;}catch(e){}
+  }
+};
+$('copy').onclick=async()=>{
+  try{await navigator.clipboard.writeText($('link').value);$('toast').textContent='Lien copié ✅';}
+  catch(e){$('link').select();$('toast').textContent='Sélectionné : copie-le avec Ctrl+C';}
+};
 
-/* Il fuit aussi quand le doigt / la souris s'approche */
-addEventListener('pointermove',e=>{
-  const r=no.getBoundingClientRect();
-  const cx=r.left+r.width/2, cy=r.top+r.height/2;
-  if(Math.hypot(e.clientX-cx,e.clientY-cy)<90) flee();
-});
+/* Viewer */
+function clearFx(){timers.forEach(t=>{clearInterval(t);clearTimeout(t)});timers=[];document.querySelectorAll('.fl').forEach(x=>x.remove());}
+function fx(cls,list,size,dur,life){
+  const f=document.createElement('div');f.className='fl '+cls;f.textContent=list[Math.random()*list.length|0];
+  f.style.left=Math.random()*100+'vw';f.style.fontSize=(size[0]+Math.random()*size[1])+'px';
+  f.style.animationDuration=(dur[0]+Math.random()*dur[1])+'s';document.body.appendChild(f);setTimeout(()=>f.remove(),life);
+}
+function play(k,nom,de,backTo){
+  const T=TPL[k]||TPL.sortir;cur=T;clearFx();
+  const r=document.documentElement.style;r.setProperty('--bg1',T.c[0]);r.setProperty('--bg2',T.c[1]);r.setProperty('--acc',T.c[2]);
+  $('emo').textContent=T.e;$('emo2').textContent=T.e;$('lt').textContent=T.t;
+  $('q').textContent=nom?nom+', '+T.q.charAt(0).toLowerCase()+T.q.slice(1):T.q;
+  $('yes').textContent=T.yes;$('no').textContent=T.no;$('no').className='';$('no').style.cssText='';$('no').style.display='';
+  $('yes').style.transform='';$('msg').textContent='';$('lines').innerHTML='';$('love').classList.remove('show');
+  $('back').style.display=backTo?'block':'none';window._back=backTo;
+  $('hub').style.display='none';$('pick').style.display='none';$('view').style.display='flex';
+  timers.push(setInterval(()=>fx('heart',T.em,[16,26],[6,6],12500),450));
+  tries=0;scale=1;window._T=T;window._de=de;
+}
+function resetTheme(){['--bg1','--bg2','--acc'].forEach(v=>document.documentElement.style.removeProperty(v));}
+$('back').onclick=()=>{clearFx();$('view').style.display='none';resetTheme();if(window._back==='pick')showPick();else $('hub').style.display='block';};
+function openSet(list,nom,de,canBack){ctx={list,nom,de,canBack};if(list.length===1)play(list[0],nom,de,canBack?'hub':null);else showPick();}
+function showPick(){
+  clearFx();resetTheme();$('hub').style.display='none';$('view').style.display='none';
+  $('pt').textContent=(ctx.nom?ctx.nom+', ':'')+"j'ai des questions pour toi 💌";
+  $('pg').innerHTML=ctx.list.map(k=>`<button class="tpl" data-k="${k}"><b>${TPL[k].e}</b><span>${TPL[k].n}</span></button>`).join('');
+  $('pbk').style.display=ctx.canBack?'inline-block':'none';$('pick').style.display='block';
+}
+$('pg').onclick=e=>{const b=e.target.closest('.tpl');if(b){$('pick').style.display='none';play(b.dataset.k,ctx.nom,ctx.de,'pick');}};
+$('pbk').onclick=()=>{$('pick').style.display='none';$('hub').style.display='block';};
+
+/* Bouton NON */
+const no=$('no'),yes=$('yes'),msg=$('msg');
+const MSGS=['Essaie encore 😏','Trop lent !',"Impossible de m'attraper 🏃",'Tu es sûr(e) ? 🥺','Le bouton Non a peur 😂','Allez, clique sur Oui 💖','Raté !'];
+let tries=0,scale=1;
+function flee(){
+  const w=no.offsetWidth,h=no.offsetHeight,pad=12,c=no.getBoundingClientRect();let x,y,n=0;
+  do{x=pad+Math.random()*Math.max(innerWidth-w-2*pad,1);y=pad+Math.random()*Math.max(innerHeight-h-2*pad,1);n++}while(Math.hypot(x-c.left,y-c.top)<160&&n<20);
+  no.classList.add('fly');no.style.left=x+'px';no.style.top=y+'px';no.style.transform='rotate('+((Math.random()*40-20)|0)+'deg)';
+  msg.textContent=MSGS[++tries%MSGS.length];scale=Math.min(scale+.12,2.2);yes.style.transform='scale('+scale+')';
+}
+['pointerenter','pointerdown','touchstart','mousedown','click','focus'].forEach(ev=>no.addEventListener(ev,e=>{e.preventDefault();flee();},{passive:false}));
+addEventListener('pointermove',e=>{if($('view').style.display!=='flex')return;const r=no.getBoundingClientRect();if(Math.hypot(e.clientX-(r.left+r.width/2),e.clientY-(r.top+r.height/2))<90)flee();});
 
 /* OUI */
-yes.addEventListener('click',()=>{
-  const love=document.getElementById('love');
-  love.classList.add('show');
-  no.style.display='none';
-  const box=document.getElementById('lines');
-  T.lines.forEach((t,i)=>{
-    const d=document.createElement('div');d.className='line';d.textContent=t;box.appendChild(d);
-    setTimeout(()=>d.classList.add('in'),900+i*1600);
-  });
-  if(DE){const s=document.createElement('div');s.className='line';s.style.fontStyle='italic';s.textContent='— '+DE;box.appendChild(s);setTimeout(()=>s.classList.add('in'),900+T.lines.length*1600);}
-  let c=0;const iv=setInterval(()=>{
-    for(let k=0;k<4;k++){
-      const f=document.createElement('div');f.className='conf';
-      f.textContent=['💖','🎉','✨','💕','🌹'][Math.random()*5|0];
-      f.style.left=Math.random()*100+'vw';f.style.fontSize=(18+Math.random()*22)+'px';
-      f.style.animationDuration=(2.5+Math.random()*3)+'s';
-      document.body.appendChild(f);setTimeout(()=>f.remove(),6000);
-    }
-    if(++c>50)clearInterval(iv);
-  },120);
-});
+yes.onclick=()=>{
+  const T=window._T,box=$('lines');$('love').classList.add('show');no.style.display='none';
+  T.l.forEach((t,i)=>{const d=document.createElement('div');d.className='line';d.textContent=t;box.appendChild(d);timers.push(setTimeout(()=>d.classList.add('in'),900+i*1600));});
+  if(window._de){const s=document.createElement('div');s.className='line';s.style.fontStyle='italic';s.textContent='— '+window._de;box.appendChild(s);timers.push(setTimeout(()=>s.classList.add('in'),900+T.l.length*1600));}
+  let c=0;const iv=setInterval(()=>{for(let k=0;k<4;k++)fx('conf',[...T.em,'🎉','✨'],[18,22],[2.5,3],6000);if(++c>50)clearInterval(iv);},120);timers.push(iv);
+};
+
+/* Lien partagé : ?t=... ouvre directement la demande */
+const P=new URLSearchParams(location.search);
+const L=(P.get('t')||'').split(',').filter(k=>TPL[k]);if(L.length)openSet(L,P.get('nom')||'',P.get('de')||'',false);
 </script>
 </body>
 </html>
